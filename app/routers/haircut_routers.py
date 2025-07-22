@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 from fastapi import Depends, APIRouter, HTTPException, status
 from sqlalchemy.orm import Session
 from models import HaircutLog
@@ -8,7 +9,7 @@ import schemas
 router = APIRouter()
 
 # get all haircuts in the db
-@router.get('', schemas.HaircutOut)
+@router.get('', response_model=List[schemas.HaircutOut])
 def get_haircuts(db: Session = Depends(get_db)):
     haircuts = db.query(HaircutLog).all()
     return haircuts

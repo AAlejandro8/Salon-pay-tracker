@@ -7,6 +7,7 @@ class Employee(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     public_id = Column(Integer, unique=True, index=True)
+    pin_hash = Column(String, nullable=False)
     name = Column(String, nullable=False)
     pay_percentage = Column(Float, nullable=False)
 

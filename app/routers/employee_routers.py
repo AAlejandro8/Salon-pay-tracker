@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import List, Optional
 from fastapi import Depends, HTTPException, Query, APIRouter, status
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 # get all employees 
-@router.get('', response_model= schemas.EmployeeOut)
+@router.get('', response_model=List[schemas.EmployeeOut])
 def get_employees(db: Session = Depends(get_db)):
     employees = db.query(Employee).all()
     return employees
@@ -21,7 +21,7 @@ def get_employees(db: Session = Depends(get_db)):
 def add_employee(employee: schemas.EmployeeCreate, db: Session = Depends(get_db)):
     new_employee = create_employee(db,
                                   name=employee.name,
-                                  pay_percentage=employee.pay_percentage)
+                                  pay_percentage=employee.pay_percentage,)
     
     try:
         db.add(new_employee)

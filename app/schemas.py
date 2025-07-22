@@ -1,16 +1,16 @@
 from datetime import datetime
 from typing import Annotated, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, constr
 
 class HaircutCreate(BaseModel):
     employee_id:int
-    price: float
+    price: Annotated[float, Field(ge=0.1, description="Must be greater than 0.1")]
     description: Optional[str] = None
 
 class HaircutOut(BaseModel):
     id: int
     employee_id: int
-    price: Annotated[float, Field(ge=0.1, description="Must be greater than 0.1")]
+    price: float
     description: Optional[str] = None
     date: datetime
 
@@ -23,6 +23,7 @@ class EmployeeCreate(BaseModel):
 
 class EmployeeOut(BaseModel):
     public_id: int
+    pin_hash: str
     name: str
     pay_percentage: float
 

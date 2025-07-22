@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from models import Employee
 import random
+from passlib.hash import pbkdf2_sha256
 # make a 5 digit id and if in the db try again (no dupes)
 def _generate_unique_5_digit_id(session: Session) -> int:
     for _ in range(10):
@@ -12,4 +13,9 @@ def _generate_unique_5_digit_id(session: Session) -> int:
 # make the employee
 def create_employee(session: Session, name: str, pay_percentage: float) -> Employee:
     public_id = _generate_unique_5_digit_id(session)
-    return Employee(name=name, pay_percentage=pay_percentage, public_id=public_id)
+    pin_hash = pbkdf2_sha256.hash(str(public_id))
+    return Employee(name=name, 
+                    pay_percentage=pay_percentage, 
+                    public_id=public_id,
+                    pin_hash=pin_hash
+                    )
