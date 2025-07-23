@@ -2,8 +2,9 @@ from datetime import datetime
 from typing import List
 from fastapi import Depends, APIRouter, HTTPException, status
 from sqlalchemy.orm import Session
-from models import HaircutLog
+from models import HaircutLog, Employee
 from db.database import get_db
+from utils import verify_pin
 import schemas
 
 router = APIRouter()
@@ -16,6 +17,16 @@ def get_haircuts(db: Session = Depends(get_db)):
 
 @router.post('',response_model=schemas.HaircutOut, status_code=status.HTTP_201_CREATED)
 def log_haircut(haircut: schemas.HaircutCreate, db: Session = Depends(get_db)):
+    # get employee by id
+    employee = db.query(Employee).filter_by(public_id=haircut.employee_id).first()
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    
+    # verify the pin before log
+    if not verify_pin(haircut.pin, employee.pin_hash):
+        raise HTTPException(status_code=401, detail="Invalid Pin")
+
+
     new_cut = HaircutLog(
         employee_id = haircut.employee_id,
         price = haircut.price,

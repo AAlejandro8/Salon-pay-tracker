@@ -17,9 +17,9 @@ def get_employees(db: Session = Depends(get_db)):
     return employees
 
 # Make an employee
-@router.post('',response_model= schemas.EmployeeOut ,status_code=status.HTTP_201_CREATED)
+@router.post('', status_code=status.HTTP_201_CREATED)
 def add_employee(employee: schemas.EmployeeCreate, db: Session = Depends(get_db)):
-    new_employee = create_employee(db,
+    new_employee, pin = create_employee(db,
                                   name=employee.name,
                                   pay_percentage=employee.pay_percentage,)
     
@@ -30,7 +30,12 @@ def add_employee(employee: schemas.EmployeeCreate, db: Session = Depends(get_db)
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
     
-    return new_employee
+    return {
+        "public_id": new_employee.public_id,
+        "name": new_employee.name,
+        "pay_percentage": new_employee.pay_percentage,
+        "raw_pin": pin
+    }
 
 # Generate a weekly pay stub
 @router.get("/{employee_id}/summary")

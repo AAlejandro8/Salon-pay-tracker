@@ -8,7 +8,7 @@ class HaircutLog(Base):
     __tablename__ = 'haircut_logs'
 
     id = Column(Integer, primary_key=True, index=True)
-    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
+    employee_id = Column(Integer, ForeignKey("employees.public_id"), nullable=False)
     client = Column(String, nullable=True)
     price = Column(Float, nullable=False)
     description = Column(String, nullable=True)

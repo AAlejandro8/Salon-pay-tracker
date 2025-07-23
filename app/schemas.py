@@ -4,7 +4,9 @@ from pydantic import BaseModel, Field, constr
 
 class HaircutCreate(BaseModel):
     employee_id:int
+    pin: str
     price: Annotated[float, Field(ge=0.1, description="Must be greater than 0.1")]
+    client_name: Optional[str] = None
     description: Optional[str] = None
 
 class HaircutOut(BaseModel):
