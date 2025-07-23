@@ -1,4 +1,4 @@
-from fastapi import Depends, status, HTTPException, APIRouter
+from fastapi import Depends, status, HTTPException
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordBearer
@@ -52,6 +52,12 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 
     user = db.query(models.Employee).filter(models.Employee.public_id == token.id).first()
 
+    return user
+
+# checks is user is admin for admin only endpoints
+def admin_required(user = Depends(get_current_user)):
+    if not user.is_admin:
+        raise HTTPException(status_code=403, detail="Admins only")
     return user
 
 

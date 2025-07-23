@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Response
+from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from db.database import get_db
@@ -19,7 +19,10 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session =
 
     if not utils.verify_pin(user_credentials.password, employee.pin_hash):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials")
-
+    
+    if not employee.is_admin:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Admins only")
+    
     access_token = auth.create_access_token(data={"user_id": employee.public_id})
 
     return {"access_token": access_token, "token_type": "bearer"}

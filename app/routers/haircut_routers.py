@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import List
 from fastapi import Depends, APIRouter, HTTPException, status
 from sqlalchemy.orm import Session
+from utils.auth import admin_required
 from models import HaircutLog, Employee
 from db.database import get_db
 from utils.utils import verify_pin
@@ -10,7 +11,7 @@ import schemas
 router = APIRouter()
 
 # get all haircuts in the db
-@router.get('', response_model=List[schemas.HaircutOut])
+@router.get('', response_model=List[schemas.HaircutOut], dependencies = [Depends(admin_required)])
 def get_haircuts(db: Session = Depends(get_db)):
     haircuts = db.query(HaircutLog).all()
     return haircuts

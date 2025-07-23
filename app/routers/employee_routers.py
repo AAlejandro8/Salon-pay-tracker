@@ -7,6 +7,7 @@ from models import Employee, HaircutLog
 from db.database import get_db
 import schemas
 from utils.utils import create_employee
+from utils.auth import admin_required
 router = APIRouter()
 
 
@@ -17,7 +18,7 @@ def get_employees(db: Session = Depends(get_db)):
     return employees
 
 # Make an employee
-@router.post('', status_code=status.HTTP_201_CREATED)
+@router.post('', status_code=status.HTTP_201_CREATED,  dependencies = [Depends(admin_required)])
 def add_employee(employee: schemas.EmployeeCreate, db: Session = Depends(get_db)):
     new_employee, pin = create_employee(db,
                                   name=employee.name,
@@ -39,7 +40,7 @@ def add_employee(employee: schemas.EmployeeCreate, db: Session = Depends(get_db)
     }
 
 # Generate a weekly pay stub
-@router.get("/{employee_id}/summary")
+@router.get("/{employee_id}/summary", dependencies = [Depends(admin_required)])
 def get_employee_summary(
     employee_id: int,
     start: Optional[str] = Query(None),  # query param: ?start=2025-07-14
