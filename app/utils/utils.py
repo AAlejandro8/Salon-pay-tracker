@@ -11,16 +11,18 @@ def _generate_unique_5_digit_id(session: Session) -> int:
     raise Exception("Couldn't create a 5 digit id after 5 attemps")
 
 # make the employee
-def create_employee(session: Session, name: str, pay_percentage: float) -> Employee:
+def create_employee(session: Session, name: str, pay_percentage: float, is_admin: bool = False) -> Employee:
     public_id = _generate_unique_5_digit_id(session)
     pin = _generate_pin()
     pin_hash = pbkdf2_sha256.hash(pin)
     employee = Employee(name=name, 
                     pay_percentage=pay_percentage, 
                     public_id=public_id,
-                    pin_hash=pin_hash
+                    pin_hash=pin_hash,
+                    is_admin=is_admin
                     )
     return employee, pin
+
 # verify the pin 
 def verify_pin(plain_pin:str, hashed_pin) -> bool:
     return pbkdf2_sha256.verify(plain_pin, hashed_pin)

@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from models import Employee, HaircutLog
 from db.database import get_db
 import schemas
-from utils import create_employee
+from utils.utils import create_employee
 router = APIRouter()
 
 
@@ -21,7 +21,8 @@ def get_employees(db: Session = Depends(get_db)):
 def add_employee(employee: schemas.EmployeeCreate, db: Session = Depends(get_db)):
     new_employee, pin = create_employee(db,
                                   name=employee.name,
-                                  pay_percentage=employee.pay_percentage,)
+                                  pay_percentage=employee.pay_percentage,
+                                  is_admin=employee.is_admin)
     
     try:
         db.add(new_employee)

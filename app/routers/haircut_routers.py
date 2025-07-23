@@ -4,7 +4,7 @@ from fastapi import Depends, APIRouter, HTTPException, status
 from sqlalchemy.orm import Session
 from models import HaircutLog, Employee
 from db.database import get_db
-from utils import verify_pin
+from utils.utils import verify_pin
 import schemas
 
 router = APIRouter()

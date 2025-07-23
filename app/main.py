@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from db.database import engine, Base
-from routers import employee_routers, haircut_routers
+from routers import employee_routers, haircut_routers, auth_routers
 
 Base.metadata.create_all(bind=engine)
 
@@ -17,6 +17,11 @@ app.include_router(
                    prefix="/haircuts",
                    tags=['haircuts']
                    )
+app.include_router(
+                    auth_routers.router,
+                    prefix="/auth",
+                    tags=['auth']
+)
 
 @app.get("/")
 def read_root():

@@ -22,12 +22,21 @@ class HaircutOut(BaseModel):
 class EmployeeCreate(BaseModel):
     name: str
     pay_percentage: Annotated[float, Field(ge=0, le=100, description="Percentage between 0 and 100")]
+    is_admin: Optional[bool] = False
 
 class EmployeeOut(BaseModel):
     public_id: int
-    pin_hash: str
     name: str
     pay_percentage: float
+    is_admin: bool
 
     class Config:
         orm_mode=True
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    id: Optional[str] = None

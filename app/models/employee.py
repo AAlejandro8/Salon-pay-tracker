@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, UniqueConstraint
+from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey, DateTime, UniqueConstraint
 from sqlalchemy.orm import relationship, Session
 from db.database import Base
 
@@ -10,6 +10,7 @@ class Employee(Base):
     pin_hash = Column(String, nullable=False)
     name = Column(String, nullable=False)
     pay_percentage = Column(Float, nullable=False)
+    is_admin = Column(Boolean, default=False)
 
     haircuts = relationship("HaircutLog", back_populates="employee")
     
