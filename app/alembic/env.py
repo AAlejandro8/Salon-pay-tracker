@@ -12,7 +12,8 @@ from db.database import Base
 
 # Import ALL your models - this registers them with Base.metadata
 import models.employee
-import models.haircut_log
+import models.service_type
+import models.service_log
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

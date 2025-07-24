@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from models import Employee
+from models.service_type import ServiceType
 import random
 from passlib.hash import pbkdf2_sha256
 # make a 5 digit id and if in the db try again (no dupes)
@@ -22,6 +23,15 @@ def create_employee(session: Session, name: str, pay_percentage: float, is_admin
                     is_admin=is_admin
                     )
     return employee, pin
+
+# create a new service type
+def create_service(session: Session, name:str, category:str, description:str, base_price:float) -> ServiceType:
+    service = ServiceType(name=name,
+                         category=category,
+                         description=description,
+                         base_price=base_price
+                         )
+    return service
 
 # verify the pin 
 def verify_pin(plain_pin:str, hashed_pin) -> bool:

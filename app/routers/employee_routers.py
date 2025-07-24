@@ -28,6 +28,7 @@ def add_employee(employee: schemas.EmployeeCreate, db: Session = Depends(get_db)
     try:
         db.add(new_employee)
         db.commit()
+        db.refresh(new_employee)
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
