@@ -13,32 +13,38 @@ import schemas
 router = APIRouter()
 
 # get all available services
-router.get('', response_model = schemas.ServiceTypeOut)
+@router.get('', response_model = List[schemas.ServiceTypeOut])
 def get_services(db: Session = Depends(get_db)):
     services = db.query(ServiceType).all()
     return services
 
 # add a new service
-router.post('', status_code=status.HTTP_201_CREATED, dependencies=[Depends(admin_required)], response_model=schemas.ServiceTypeOut)
+@router.post('', status_code=status.HTTP_201_CREATED, dependencies=[Depends(admin_required)], response_model=schemas.ServiceTypeOut)
 def add_service(service: schemas.ServiceTypeCreate, db: Session = Depends(get_db)):
     new_service = create_service(db,
                                  name=service.name,
                                  category=service.category,
                                  description=service.description,
                                  base_price=service.base_price)
+    
     try:
         db.add(new_service)
         db.commit()
-        db.refresh()
+        db.refresh(new_service)
     except Exception as e:
         db.rollback()
+        if "UNIQUE constraint failed" in str(e):
+            raise HTTPException(
+                status_code=400,
+                detail= f'Service: {new_service.name} already exists!'
+            )
         raise HTTPException(status_code=500, detail=str(e))
     
     return new_service
 
 
 # update a service
-router.put('/{service_id}', response_model=schemas.ServiceTypeOut, dependencies=[Depends(admin_required)], status_code=status.HTTP_200_OK)
+@router.put('/{service_id}', response_model=schemas.ServiceTypeOut, dependencies=[Depends(admin_required)], status_code=status.HTTP_200_OK)
 def update_service(service_id: int, service: schemas.ServiceTypeCreate, db: Session = Depends(get_db)):
     # find the service using id
     existing_service = db.query(ServiceType).filter(ServiceType.id == service_id).first()
@@ -62,7 +68,7 @@ def update_service(service_id: int, service: schemas.ServiceTypeCreate, db: Sess
     return existing_service
 
 # patch certain parts
-router.patch('/{service_id}', response_model=schemas.ServiceTypeOut, dependencies=[Depends(admin_required)], status_code=status.HTTP_200_OK)
+@router.patch('/{service_id}', response_model=schemas.ServiceTypeOut, dependencies=[Depends(admin_required)], status_code=status.HTTP_200_OK)
 def patch_service(service_id: int, service: schemas.ServiceTypePatch, db: Session = Depends(get_db)):
     # find the service using id
     existing_service = db.query(ServiceType).filter(ServiceType.id == service_id).first()
@@ -93,7 +99,7 @@ def patch_service(service_id: int, service: schemas.ServiceTypePatch, db: Sessio
     return existing_service
 
 # delete a service
-router.delete('/{service_id}', dependencies=[Depends(admin_required)], status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/{service_id}', dependencies=[Depends(admin_required)], status_code=status.HTTP_204_NO_CONTENT)
 def delete_service(service_id: int, db: Session = Depends(get_db)):
     # find the service to delete
     service_to_delete = db.query(ServiceType).filter(ServiceType.id == service_id).first()

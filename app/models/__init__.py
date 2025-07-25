@@ -1,2 +1,3 @@
 from .employee import Employee
-from .haircut_log import HaircutLog
+from .service_log import ServiceLog
+from .service_type import ServiceType

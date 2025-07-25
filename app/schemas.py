@@ -62,3 +62,9 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Optional[str] = None
+
+class AdminCreatedOut(EmployeeOut):
+    raw_pin: str
+    
+    class Config:
+        from_attributes = True

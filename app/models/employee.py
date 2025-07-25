@@ -1,5 +1,5 @@
-from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey, DateTime, UniqueConstraint
-from sqlalchemy.orm import relationship, Session
+from sqlalchemy import Boolean, Column, Integer, String, Float
+from sqlalchemy.orm import relationship
 from db.database import Base
 
 class Employee(Base):
@@ -12,5 +12,5 @@ class Employee(Base):
     pay_percentage = Column(Float, nullable=False)
     is_admin = Column(Boolean, default=False)
 
-    haircuts = relationship("HaircutLog", back_populates="employee")
+    service_logs = relationship("ServiceLog", back_populates="employee")
     

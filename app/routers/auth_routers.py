@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 import schemas
 from utils import auth, utils
+from utils.utils import create_employee
 from models import Employee
 
 router = APIRouter()
@@ -26,3 +27,27 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session =
     access_token = auth.create_access_token(data={"user_id": employee.public_id})
 
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.post('', status_code=status.HTTP_201_CREATED,response_model=schemas.AdminCreatedOut)
+def create_admin(employee: schemas.EmployeeCreate, db: Session = Depends(get_db)):
+    new_employee, pin = create_employee(db,
+                                  name=employee.name,
+                                  pay_percentage=employee.pay_percentage,
+                                  is_admin=employee.is_admin
+                                  )
+    
+    try:
+        db.add(new_employee)
+        db.commit()
+        db.refresh(new_employee)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    return {
+        "public_id": new_employee.public_id,
+        "name": new_employee.name,
+        "pay_percentage": new_employee.pay_percentage,
+        "is_admin": new_employee.is_admin,
+        "raw_pin": pin
+    }

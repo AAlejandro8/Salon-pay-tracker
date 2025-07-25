@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from db.database import engine, Base
-from routers import employee_routers, haircut_routers, auth_routers, service_routers
+from routers import employee_routers, auth_routers, service_routers
 
 Base.metadata.create_all(bind=engine)
 
@@ -12,11 +12,6 @@ app.include_router(
                    tags=['employees']
                    )
 
-app.include_router(
-                   haircut_routers.router, 
-                   prefix="/haircuts",
-                   tags=['haircuts']
-                   )
 app.include_router(
                     auth_routers.router,
                     prefix="/auth",

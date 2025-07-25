@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Float
 from sqlalchemy.orm import relationship
 from db.database import Base
 
@@ -9,7 +9,7 @@ class ServiceType(Base):
     name = Column(String, unique=True, nullable=False, index=True)  
     category = Column(String, nullable=True)  
     description = Column(String, nullable=True)
-    base_price = Column(float, nullable=False)
+    base_price = Column(Float, nullable=False)
     
     # Relationship to service logs
     service_logs = relationship("ServiceLog", back_populates="service")
