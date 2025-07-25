@@ -12,6 +12,7 @@ class ServiceLog(Base):
     client_name = Column(String, nullable=True) 
     price = Column(Float, nullable=False)
     base_price = Column(Float, nullable=True)
+    tip = Column(Float, nullable=True)
     notes = Column(String, nullable=True) 
     date = Column(DateTime, default=datetime.utcnow)
 

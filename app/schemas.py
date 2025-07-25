@@ -2,25 +2,7 @@ from datetime import datetime
 from typing import Annotated, Optional
 from pydantic import BaseModel, Field, constr
 
-# LEGACY (DELETE SOON)
-class HaircutCreate(BaseModel):
-    employee_id:int
-    pin: str
-    price: Annotated[float, Field(ge=0.1, description="Must be greater than 0.1")]
-    client_name: Optional[str] = None
-    description: Optional[str] = None
-
-class HaircutOut(BaseModel):
-    id: int
-    employee_id: int
-    price: float
-    description: Optional[str] = None
-    date: datetime
-
-    class Config:
-        orm_mode=True
-
-# Services (create)
+# Services
 class ServiceTypeCreate(BaseModel):
     name: str
     category: str
@@ -38,6 +20,29 @@ class ServiceTypePatch(BaseModel):
     category: Optional[str] = None
     description: Optional[str] = None
     base_price: Optional[Annotated[float, Field(ge=0.1, description="Price must be greater than 0.1")]] = None
+
+# service log 
+class ServiceLogCreate(BaseModel):
+    employee_id: int
+    pin: str
+    service_type_id: int
+    client_name: Optional[str] = None
+    price: Annotated[float, Field(ge=0.1, description="Price must be greater than 0.1")] 
+    tip: Optional[Annotated[float, Field(ge=0, description="Tip must be 0 or greater")]] = None
+    notes: Optional[str] = None
+
+class ServiceLogOut(BaseModel):
+    id: int
+    employee_id: int
+    service_type_id: int
+    client_name: Optional[str] = None
+    price: float
+    tip: Optional[float] = None
+    notes: Optional[str] = None
+    base_price: Optional[float] = None
+    date: datetime
+    class Config:
+        from_attributes = True
 
 # Employee Schemas
 class EmployeeCreate(BaseModel):
