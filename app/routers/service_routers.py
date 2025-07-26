@@ -114,7 +114,9 @@ def delete_service(service_id: int, db: Session = Depends(get_db)):
     if usage_count > 0:
         raise HTTPException(status_code=400, detail=f"Cannot delete - service has {usage_count} transaction records" )
     
-    db.delete(service_to_delete)
-    db.commit()
-
-    return {"message": "Service deleted successfully!"}
+    try:
+        db.delete(service_to_delete)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))

@@ -44,6 +44,12 @@ class ServiceLogOut(BaseModel):
     class Config:
         from_attributes = True
 
+class ServiceLogPatch(BaseModel):
+    client_name: Optional[str] = None
+    price: Optional[Annotated[float, Field(ge=0.1, description='Price must be greater than 0.1')]] = None
+    tip: Optional[Annotated[float, Field(ge=0.1, description='Price must be greater than 0.1')]] = None
+    notes: Optional[str] = None
+
 # Employee Schemas
 class EmployeeCreate(BaseModel):
     name: str
