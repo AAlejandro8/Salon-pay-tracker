@@ -65,6 +65,11 @@ class EmployeeOut(BaseModel):
     class Config:
         from_attributes = True
 
+class EmployeeUpdatePayPercentage(BaseModel):
+    public_id: int
+    pay_percentage: float
+    
+
 
 # Auth Schemas
 class Token(BaseModel):
