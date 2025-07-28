@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from db.database import engine, Base
-from routers import employee_routers, auth_routers, service_routers, service_log_routers
+from app.db.database import engine, Base
+from app.routers import employee_routers, auth_routers, service_routers, service_log_routers
 from fastapi.middleware.cors import CORSMiddleware
 
 Base.metadata.create_all(bind=engine)
