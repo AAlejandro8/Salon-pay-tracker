@@ -6,14 +6,19 @@ import os
 
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URL = os.getenv('DATABASE_URL')
+# Get DATABASE_URL from environment, fallback to SQLite
+SQLALCHEMY_DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///./salon.db')
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+# Handle different database types
+if SQLALCHEMY_DATABASE_URL.startswith("postgresql"):
+    engine = create_engine(SQLALCHEMY_DATABASE_URL)
+else:
+    engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
-# database dependency
+
 def get_db():
     db = SessionLocal()
     try:
