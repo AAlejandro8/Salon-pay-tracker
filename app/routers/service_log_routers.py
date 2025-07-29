@@ -2,13 +2,13 @@ from datetime import datetime
 from typing import List
 from fastapi import Depends, APIRouter, HTTPException, status
 from sqlalchemy.orm import Session
-from utils.auth import admin_required
-from models.service_log import ServiceLog
-from models.service_type import ServiceType
-from models.employee import Employee
-from db.database import get_db
-from utils.utils import verify_pin
-import schemas
+from app.utils.auth import admin_required
+from app.models.service_log import ServiceLog
+from app.models.service_type import ServiceType
+from app.models.employee import Employee
+from app.db.database import get_db
+from app.utils.utils import verify_pin
+import app.schemas as schemas
 
 router = APIRouter()
 

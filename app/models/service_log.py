@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
 from datetime import datetime
 from sqlalchemy.orm import relationship
-from db.database import Base
+from app.db.database import Base
 
 class ServiceLog(Base):
     __tablename__ = 'service_logs'
