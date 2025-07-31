@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float
 from sqlalchemy.orm import relationship
-from app.db.database import Base
+from db.database import Base
 
 class ServiceType(Base):
     __tablename__ = 'service_types'

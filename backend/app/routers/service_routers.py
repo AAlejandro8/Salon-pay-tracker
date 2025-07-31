@@ -2,11 +2,11 @@ from datetime import datetime
 from typing import List
 from fastapi import Depends, APIRouter, HTTPException, status
 from sqlalchemy.orm import Session
-from app.utils.auth import admin_required
-from app.models.service_type import ServiceType
-from app.models.service_log import ServiceLog
-from app.db.database import get_db
-from app.utils.utils import create_service
+from utils.auth import admin_required
+from models.service_type import ServiceType
+from models.service_log import ServiceLog
+from db.database import get_db
+from utils.utils import create_service
 import app.schemas as schemas
 
 

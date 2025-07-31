@@ -3,12 +3,12 @@ from typing import List, Optional
 from fastapi import Depends, HTTPException, Query, APIRouter, status, dependencies
 from sqlalchemy import func
 from sqlalchemy.orm import Session
-from app.models import Employee, ServiceLog
-from app.db.database import get_db
-import app.schemas as schemas
-from app.utils.utils import create_employee
-from app.utils.auth import admin_required
-router = APIRouter()
+from models import Employee, ServiceLog
+from db.database import get_db
+import schemas as schemas
+from utils.utils import create_employee
+from utils.auth import admin_required
+router = APIRouter
 
 
 # get all employees 

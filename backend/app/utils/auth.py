@@ -5,8 +5,8 @@ from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
-import app.models as models
-from app.db.database import get_db
+import models as models
+from db.database import get_db
 import os
 
 load_dotenv()

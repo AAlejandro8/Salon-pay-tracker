@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.models import Employee
-from app.models.service_type import ServiceType
+from models import Employee
+from models.service_type import ServiceType
 import random
 from passlib.hash import pbkdf2_sha256
 # make a 5 digit id and if in the db try again (no dupes)
