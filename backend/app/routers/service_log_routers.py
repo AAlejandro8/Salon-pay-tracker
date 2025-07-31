@@ -22,7 +22,7 @@ def get_service_logs(db: Session = Depends(get_db)):
 @router.post('', response_model=schemas.ServiceLogOut, status_code=status.HTTP_201_CREATED)
 def log_service(service_log: schemas.ServiceLogCreate, db: Session = Depends(get_db)):
     # find employee by id
-    employee = db.query(Employee).filter(Employee.id == service_log.employee_id).first()
+    employee = db.query(Employee).filter(Employee.public_id == service_log.employee_id).first()
     # check if the employee exits
     if not employee:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Employee doesnt exist')
@@ -35,7 +35,7 @@ def log_service(service_log: schemas.ServiceLogCreate, db: Session = Depends(get
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Service doesnt exist')
     
     create_log = ServiceLog(
-        employee_id=service_log.employee_id,
+        employee_id=employee.id,
         service_type_id=service_log.service_type_id,
         client_name=service_log.client_name,
         price=service_log.price,
