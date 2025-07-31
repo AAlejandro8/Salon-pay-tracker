@@ -35,7 +35,7 @@ def log_service(service_log: schemas.ServiceLogCreate, db: Session = Depends(get
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Service doesnt exist')
     
     create_log = ServiceLog(
-        employee_id=employee.id,
+        employee_id=employee.public_id,
         service_type_id=service_log.service_type_id,
         client_name=service_log.client_name,
         price=service_log.price,
