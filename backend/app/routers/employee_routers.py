@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from models import Employee, ServiceLog
 from db.database import get_db
 import schemas as schemas
-from utils.utils import create_employee
+from utils.utils import create_employee, verify_pin
 from utils.auth import admin_required
 router = APIRouter()
 
@@ -75,6 +75,31 @@ def delete_employee(employee_id: int, db: Session = Depends(get_db)):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+    
+@router.post('/validate-pin', response_model=schemas.EmployeeOut)
+def validate_employee_pin(pin_data: dict, db: Session = Depends(get_db)):
+
+    pin = pin_data.get('pin')
+    
+    if not pin:
+        raise HTTPException(status_code=400, detail="PIN is required")
+    
+    # Get all employees and check PIN against each one
+    employees = db.query(Employee).all()
+    
+    for employee in employees:
+        # Use your existing verify_password function to check PIN
+        if verify_pin(pin, employee.pin_hash):
+            return schemas.EmployeeOut(
+                public_id=employee.public_id,
+                name=employee.name,
+                pay_percentage=employee.pay_percentage,
+                is_admin=employee.is_admin
+            )
+    
+    # No matching PIN found
+    raise HTTPException(status_code=401, detail="Invalid PIN")
+
 
 
 # Generate a weekly pay stub
