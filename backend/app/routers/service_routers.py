@@ -7,7 +7,7 @@ from models.service_type import ServiceType
 from models.service_log import ServiceLog
 from db.database import get_db
 from utils.utils import create_service
-import app.schemas as schemas
+import schemas as schemas
 
 
 router = APIRouter()
