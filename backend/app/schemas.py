@@ -68,6 +68,9 @@ class EmployeeOut(BaseModel):
 class EmployeeUpdatePayPercentage(BaseModel):
     public_id: int
     pay_percentage: float
+
+class PinInput(BaseModel):
+    pin: str
     
 
 

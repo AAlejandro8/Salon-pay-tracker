@@ -77,18 +77,15 @@ def delete_employee(employee_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
     
 @router.post('/validate-pin', response_model=schemas.EmployeeOut)
-def validate_employee_pin(pin_data: dict, db: Session = Depends(get_db)):
+def validate_employee_pin(pin_data: schemas.PinInput, db: Session = Depends(get_db)):
+    pin = pin_data.pin.strip()
 
-    pin = pin_data.get('pin')
-    
     if not pin:
         raise HTTPException(status_code=400, detail="PIN is required")
-    
-    # Get all employees and check PIN against each one
+
     employees = db.query(Employee).all()
-    
+
     for employee in employees:
-        # Use your existing verify_password function to check PIN
         if verify_pin(pin, employee.pin_hash):
             return schemas.EmployeeOut(
                 public_id=employee.public_id,
@@ -96,8 +93,7 @@ def validate_employee_pin(pin_data: dict, db: Session = Depends(get_db)):
                 pay_percentage=employee.pay_percentage,
                 is_admin=employee.is_admin
             )
-    
-    # No matching PIN found
+
     raise HTTPException(status_code=401, detail="Invalid PIN")
 
 
