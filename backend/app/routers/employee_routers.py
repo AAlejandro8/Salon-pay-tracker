@@ -8,7 +8,7 @@ from db.database import get_db
 import schemas as schemas
 from utils.utils import create_employee
 from utils.auth import admin_required
-router = APIRouter
+router = APIRouter()
 
 
 # get all employees 
