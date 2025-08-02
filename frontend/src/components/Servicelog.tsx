@@ -237,7 +237,7 @@ const ServiceLog = () => {
           />
         </div>
 
-        {/* Commission Preview */}
+        {/* Commission Preview DEVELOPMENT ONLY */}
         {serviceForm.price && (
           <div style={{ 
             backgroundColor: '#000000ff', 

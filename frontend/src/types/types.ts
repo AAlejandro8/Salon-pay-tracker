@@ -37,4 +37,6 @@ export interface AdminLogPayload {
 export interface AdminLoginResponse {
     message: string;
     token?: string;
+    access_token?: string; 
+    token_type?: string;    
 }

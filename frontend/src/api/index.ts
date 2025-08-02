@@ -48,16 +48,27 @@ export const logService = async(data: LogServicePayload): Promise<boolean> => {
 export const loginAdmin = async(
     credentials: AdminLogPayload
 ): Promise<AdminLoginResponse> => {
-    const res = await fetch(`${API_BASE}/admin/login`, {
+    
+    const formData = new URLSearchParams();
+    formData.append('username', credentials.username);
+    formData.append('password', credentials.password);
+    
+    const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
-        headers : { 'Content-Type': 'application/json'},
-        body: JSON.stringify(credentials)
+        headers: { 
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
     });
 
     if (!res.ok){
-        throw new Error('Invalid login');
+        throw new Error('Invalid login credentials');
     }
 
-    const data = await res.json()
-    return data
+    const data = await res.json();
+    
+    return {
+        message: 'Login successful',
+        token: data.access_token
+    };
 }
