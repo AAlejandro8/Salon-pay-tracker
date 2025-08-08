@@ -37,7 +37,7 @@ A professional salon management API built with FastAPI, designed for tracking se
 
 1. **Clone the repository**
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/AAlejandro8/Salon-pay-tracker.git
 cd Project-Nemo
 ```
 
