@@ -8,7 +8,7 @@ load_dotenv()
 
 def get_database_url():
     """
-    Get the AWS RDS database URL with fallback to local dev
+    Get the AWS RDS database URL with fallback to local dev for development!
     """
 
     aws_db_url = os.getenv("AWS_DATABASE_URL")
@@ -68,7 +68,7 @@ def test_connection():
     try:
         with engine.connect() as connection:
             print("Database connection successful!")
-            # Get database info without exposing password
+            # Get database info without exposing password 😊
             db_info = SQLALCHEMY_DATABASE_URL.split('@')[1] if '@' in SQLALCHEMY_DATABASE_URL else 'SQLite'
             print(f"Connected to: {db_info}")
             return True

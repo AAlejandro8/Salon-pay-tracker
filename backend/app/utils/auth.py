@@ -1,3 +1,4 @@
+import secrets
 from fastapi import Depends, status, HTTPException
 import jwt
 from jwt import InvalidTokenError as JWTError
@@ -16,6 +17,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl='auth/login')
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv('ALGORITHM')
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
+
+if not SECRET_KEY:
+    print("⚠️  WARNING: No SECRET_KEY found in .env file!")
+    print("⚠️  Generating temporary secret - SET SECRET_KEY in .env for production!")
+    SECRET_KEY = secrets.token_urlsafe(64)
 
 def create_access_token(data: dict):
     to_encode = data.copy()

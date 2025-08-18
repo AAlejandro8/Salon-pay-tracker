@@ -1,6 +1,6 @@
 import type { Employee, Service, LogServicePayload, AdminLogPayload, AdminLoginResponse } from "../types/types";
 
-const API_BASE = 'https://salon-pay-tracker-production.up.railway.app'
+const API_BASE = 'awaiting aws deployment'
 
 export const validatePin = async (pin: string): Promise<Employee | null> => {
     try{
