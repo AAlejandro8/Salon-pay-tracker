@@ -40,3 +40,28 @@ export interface AdminLoginResponse {
     access_token?: string; 
     token_type?: string;    
 }
+
+export interface addServicePayload {
+    name: string;
+    category?: string;
+    description?: string;
+    base_price: number;
+}
+
+export interface patchServiceLogPayLoad {
+    client_name?: string;
+    price?: number;
+    tip?: number;
+    notes?: string;
+}
+
+export interface updateEmployeePayLoad {
+    public_id: number;
+    pay_percentage: number;
+}
+
+export interface addEmployeePayLoad {
+    name: string;
+    pay_percentage: number;
+    is_admin?: boolean;
+}
