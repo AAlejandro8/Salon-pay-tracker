@@ -1,14 +1,15 @@
 export type Employee = {
+  public_id: number;           
   name: string;
-  public_id: number; 
   pay_percentage: number;
+  is_admin: boolean;    
 };
-
 export type Service = {
   id: number;
   name: string;
-  base_price: number;
-  category: string;
+  base_price: number;   
+  category?: string;
+  description?: string      
 };
 
 export type ServiceForm = {
@@ -17,6 +18,18 @@ export type ServiceForm = {
   price: string;
   tip: string;
   notes: string;
+};
+
+export type ServiceLog = {
+  id: number;
+  employee_id: number;
+  service_type_id: number;
+  client_name: string;
+  price: number;
+  tip: number;
+  notes: string;
+  base_price: number;
+  date: string; 
 };
 
 export type LogServicePayload = {
@@ -41,12 +54,12 @@ export interface AdminLoginResponse {
     token_type?: string;    
 }
 
-export interface addServicePayload {
-    name: string;
-    category?: string;
-    description?: string;
-    base_price: number;
-}
+export type addServicePayload = {
+  name: string;
+  base_price: number;     
+  category?: string;       
+  description?: string;  
+};
 
 export interface patchServiceLogPayLoad {
     client_name?: string;

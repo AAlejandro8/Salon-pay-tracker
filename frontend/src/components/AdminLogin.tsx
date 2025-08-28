@@ -25,7 +25,7 @@ const AdminLoginForm: React.FC = () => {
             const res = await loginAdmin(form);
             alert(res.message);
             if (res.token) {
-                localStorage.setItem('admin_token', res.token);
+                localStorage.setItem('adminToken', res.token);
                 navigate('/admin/dashboard');
             }
         } catch(err){

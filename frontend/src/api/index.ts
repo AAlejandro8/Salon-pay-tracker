@@ -1,6 +1,6 @@
-import type { Employee, Service, LogServicePayload, AdminLogPayload, AdminLoginResponse, addServicePayload, patchServiceLogPayLoad, updateEmployeePayLoad, addEmployeePayLoad } from "../types/types";
+import type { Employee, Service, ServiceLog,LogServicePayload, AdminLogPayload, AdminLoginResponse, addServicePayload, patchServiceLogPayLoad, updateEmployeePayLoad, addEmployeePayLoad } from "../types/types";
 
-const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000'
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000'
 
 // AUTH 
 export const loginAdmin = async(
@@ -29,7 +29,7 @@ export const loginAdmin = async(
         message: 'Login successful',
         token: data.access_token
     };
-}
+};
 
 // EMPLOYEE ROUTES
 export const validatePin = async (
@@ -51,7 +51,7 @@ export const validatePin = async (
     }
 };
 
-export const getEmployees = async(): Promise<Service[]> => {
+export const getEmployees = async(): Promise<Employee[]> => {
     try{
         const res = await fetch(`${API_BASE}/employees`);
         if (!res.ok) return [];
@@ -66,10 +66,10 @@ export const addEmployee = async(
     token: string,
     employee: addEmployeePayLoad
 ): Promise<boolean> => {
-    try{
-        const res = await fetch(`${API_BASE}/employees`,{
-            method: `POST`,
-            headers: {
+    try {
+        const res = await fetch(`${API_BASE}/employees`, {  // or whatever your endpoint is
+            method: 'POST',
+            headers: { 
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
@@ -77,8 +77,8 @@ export const addEmployee = async(
         });
 
         return res.ok;
-    }catch (err){
-        console.error('Error adding service: ', err)
+    } catch (err) {
+        console.error('Error adding employee:', err);
         return false;
     }
 };
@@ -121,7 +121,7 @@ export const deleteEmployee = async(
         console.error('Error updating employee pay: ', err)
         return false;
     }
-}
+};
 
 // ADMIN DASHBOARD ROUTES
 export const addService = async(
@@ -198,7 +198,7 @@ export const patchService = async(
         console.error('Error patching service: ', err)
         return false;
     }
-}
+};
 
 export const deleteService = async(
     serviceId: number,
@@ -216,9 +216,23 @@ export const deleteService = async(
         console.error('Error adding service: ', err)
         return false;
     }
-}
+};
 
 // SERVICE LOG PATHS
+export const getServiceLogs = async (token: string): Promise<ServiceLog[]> => {
+    try{
+        const res = await fetch(`${API_BASE}/service_log`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!res.ok) return [];
+        return await res.json();
+    }catch(err){
+        console.error('Service Return Error:', err);
+        return [];
+    }
+};
 
 export const patchServiceLog = async(
     serviceId: number,
@@ -240,7 +254,7 @@ export const patchServiceLog = async(
         console.error('Error patching service log:', err);
         return false;
     }
-}
+};
 
 export const deleteServiceLog = async(
     serviceId: number,
@@ -259,7 +273,7 @@ export const deleteServiceLog = async(
         console.error('Error patching service log:', err);
         return false;
     }
-}
+};
 
 export const logService = async(data: LogServicePayload): Promise<boolean> => {
     try{
@@ -274,4 +288,4 @@ export const logService = async(data: LogServicePayload): Promise<boolean> => {
         console.error('Error logging the service:', err);
         return false
     }
-}
+};
