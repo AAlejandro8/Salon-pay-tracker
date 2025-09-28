@@ -59,6 +59,11 @@ jobs:
           container-name: salon-api
           image: ${{ steps.build-image.outputs.image }}
 
+      - name: Remove unsupported keys from ECS task definition
+        run: |
+         jq 'del(.enableFaultInjection)' task-definition.json > task-definition-clean.json
+         mv task-definition-clean.json task-definition.json
+
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
