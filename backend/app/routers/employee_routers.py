@@ -43,7 +43,7 @@ def add_employee(employee: schemas.EmployeeCreate, db: Session = Depends(get_db)
 @router.patch('/{employee_id}', dependencies = [Depends(admin_required)])
 def update_pay_percentage(employee_id: int, update: schemas.EmployeeUpdatePayPercentage, db: Session = Depends(get_db)):
     # find employee to update pay percentage
-    employee = db.get(Employee, employee_id)
+    employee = db.query(Employee).filter(Employee.public_id == employee_id).first()
     
     if not employee:
         raise HTTPException(status_code=404, detail='Employee not found')
@@ -64,7 +64,7 @@ def update_pay_percentage(employee_id: int, update: schemas.EmployeeUpdatePayPer
 @router.delete('/{employee_id}', dependencies = [Depends(admin_required)])
 def delete_employee(employee_id: int, db: Session = Depends(get_db)):
     # find the employee to delete
-    employee = db.get(Employee, employee_id)
+    employee = db.query(Employee).filter(Employee.public_id == employee_id).first()
     
     if not employee:
         raise HTTPException(status_code=404, detail='Employee not found')
@@ -107,9 +107,8 @@ def get_employee_summary(
     db: Session = Depends(get_db),
 ):
     # see if the employee exists in our DB
-    employee = (
-       db.get(Employee, employee_id)
-    )
+    employee = db.query(Employee).filter(Employee.public_id == employee_id).first()
+    
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
     
