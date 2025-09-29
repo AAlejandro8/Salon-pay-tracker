@@ -39,7 +39,7 @@ app.include_router(
 
 @app.get("/")
 def read_root():
-    return {"Hello": "yo"}
+    return {"Hello": "this is a test for the new pipeline"}
 
 
 
