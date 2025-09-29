@@ -51,7 +51,7 @@ jobs:
             --task-definition ${{ env.ECS_BACKEND_SERVICE }} \
             --query taskDefinition > task-definition.json
 
-       - name: Clean task definition for deployment
+      - name: Clean task definition for deployment
         run: |
             cat task-definition.json | jq 'del(.enableFaultInjection, .registeredAt, .registeredBy, .status, .taskDefinitionArn, .revision, .requiresAttributes, .placementConstraints, .compatibilities, .runtimePlatform)' > task-definition-clean.json
             mv task-definition-clean.json task-definition.json
