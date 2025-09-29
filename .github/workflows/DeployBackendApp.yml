@@ -11,7 +11,8 @@ env:
   ECR_BACKEND_IMAGE: ${{ vars.ECR_BACKEND_IMAGE }}
   AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
   ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
-  ECS_BACKEND_SERVICE: ${{ vars.ECS_BACKEND_SERVICE }}
+  ECS_SERVICE_NAME: ${{ vars.ECS_SERVICE_NAME }}
+  ECS_TASK_FAMILY: ${{ vars.ECS_TASK_FAMILY }}
 
 jobs:
   deploy:
@@ -48,7 +49,7 @@ jobs:
       - name: Download task definition
         run: |
           aws ecs describe-task-definition \
-            --task-definition ${{ env.ECS_BACKEND_SERVICE }} \
+            --task-definition ${{  env.ECS_TASK_FAMILY }} \
             --query taskDefinition > task-definition.json
 
       - name: Clean task definition for deployment
@@ -70,6 +71,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_BACKEND_SERVICE }}
+          service: ${{ env.ECS_SERVICE_NAME }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
